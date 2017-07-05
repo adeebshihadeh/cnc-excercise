@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+    <head>
+        <title>cnc excercise</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <h1>cnc excercise</h1>
+
+        <div class="container-fluid">
+            <div class="col-lg-3">
+                <div class="container-padded">
+                    <table>
+                        <tr>
+                            <td>
+                                <label>x </label>
+                                <input id="x" value="190" type="number" min="0"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>y </label>
+                                <input id="y" value="190" type="number" min="0"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>feedrate </label>
+                                <input id="feedrate" value="5000" type="number" min="0"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>repeat </label>
+                                <input id="repeat" value="10" type="number" min="0"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>increment </label>
+                                <input id="increment" value="10" type="number" min="0"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>individual </label>
+                                <input id="individual" type="checkbox"></input>
+                            </td>
+                        </tr>
+                        <tr class="list-group-item">
+                            <td>
+                                <label>home xy </label>
+                                <input id="home" type="checkbox"></input>
+                            </td>
+                        </tr>
+                    </table>
+                    </br>
+                    <button type="button" class="btn" onclick="generate()">generate</button>
+                    <button type="button" class="btn" onclick="download()">download</button>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <pre id="output" style="width: 95%; height: auto; max-height: 90vh; overflow: auto" class="well"></pre>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+            function generate() {
+                var x = $("#x").val();
+                var y = $("#y").val();
+                var feedrate = $("#feedrate").val();
+                var increment = $("#increment").val();
+                var repeat = $("#repeat").val();
+                var individual = $("#individual").prop("checked");
+                var home = $("#home").prop("checked");
+
+                var toolpath = home ? "G28XY\n" : "";
+
+                toolpath += "G1 X0 Y0 F" + feedrate + "\n";
+
+                for (var i = 0; i <= repeat; i++) {
+                    toolpath += i == 0 ? ";  ORIGINAL  \n" : ";  REPEAT #" + i + "\n";
+                    for (var j = 0; j <= increment || increment == 0; j++) {
+                        toolpath += "G1 X" + (increment > 0 ? x/increment*j : x) + (individual ? "\nG1 Y" : " Y") + (increment > 0 ? y/increment*j : y) + "\n";
+                        toolpath += "G1 X0" + (individual ? "\nG1 Y0\n" : " Y0\n");
+                        if (increment == 0) break
+                    }
+                }
+                $("#output").text(toolpath);
+            }
+
+            function download() {
+                var blob = new Blob([$("#output").text()], {type: "text/plain"});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.download = "cnc-excercise.gcode";
+                a.href = url;
+                a.click();
+            }
+        </script>
+    </body>
+</html>

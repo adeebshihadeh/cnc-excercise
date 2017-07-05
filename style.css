@@ -1,0 +1,58 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    padding: 10px;
+    border: 2px solid;
+    border-radius: .3rem;
+}
+
+tr {
+    line-height: 2.25;
+    padding: 10px 5px;
+    border-width: 2px 0px;
+    border-style: solid;
+    border-color: gray;
+}
+
+pre {
+    font-size: 1.25rem;
+    font-family: sans-serif;
+    height: 100%;
+    overflow: scroll;
+    margin: 0;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: 400;
+    padding: .75rem 1.5rem;
+    color: black;
+    background-color: white;
+    line-height: 1.25;
+    border: 2px solid;
+    border-radius: .3rem;
+    margin: 10px 0px;
+}
+
+.container-padded {
+    padding: 10px;
+    margin: 0;
+}
+
+.col-lg-3 {
+    width: 25vw;
+    height: 100%;
+    float: left;
+}
+
+.col-lg-9 {
+    width: 75vw;
+    height: 100%;
+    float: right;
+}
